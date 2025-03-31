@@ -109,7 +109,7 @@ class DarkutomI2CLcd:
         self._send_command(self.LCD_SETDDRAMADDR | (col + row_offsets[row]))
 
     def putstr(self, string: str):
-        if isinstance(string, str):  # Check if input is a string
+        if isinstance(string, str):  
             for char in string:
                 self._send_data(ord(char))
         else:
@@ -235,9 +235,7 @@ class DarkutomI2CLcd:
         self.print_multiline(wrapped)
 
     def scroll_if_needed(self, text: str, speed: float):
-        # Check if text overflows the screen
         if len(text) > self.cols:
-            # Scroll the text to the left, cycling it
             while True:
                 for i in range(len(text) + self.cols):
                     self.clear()
@@ -245,13 +243,11 @@ class DarkutomI2CLcd:
                     self.putstr(text[start:i])
                     time.sleep(speed)
 
-                    # Once the text has scrolled off the screen, reset it with 16 black spaces
                     if i == len(text) + self.cols - 1:
                         self.clear()
-                        self.putstr(text[start:i] + " " * 16)  # Add 16 black spaces at the end
-                        time.sleep(speed)  # Pause before restarting
+                        self.putstr(text[start:i] + " " * 16)  
+                        time.sleep(speed) 
                         break
         else:
-            # If the text fits within the screen, just print it normally
             self.clear()
             self.putstr(text)
